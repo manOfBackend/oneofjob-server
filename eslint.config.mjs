@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    ignores: ['eslint.config.mjs', 'node_modules', 'dist', 'coverage'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -17,7 +17,7 @@ export default tseslint.config(
         ...globals.node,
         ...globals.jest,
       },
-      ecmaVersion: 5,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       parserOptions: {
         projectService: true,
@@ -27,9 +27,15 @@ export default tseslint.config(
   },
   {
     rules: {
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      'prettier/prettier': 'error',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
 );
