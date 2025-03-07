@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Post } from '@nestjs/common';
+import { JobCrawlerOrchestrator } from './job-crawler/job-crawler.orchestrator.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly orchestrator: JobCrawlerOrchestrator) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('crawl')
+  async triggerCrawl() {
+    await this.orchestrator.crawlAllSites();
+    return { message: 'OK' };
   }
 }
