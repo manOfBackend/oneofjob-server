@@ -1,9 +1,13 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^apps/job-crawler/src/(.*)$": "<rootDir>/apps/job-crawler/src/$1",
+    "^apps/web-service/src/(.*)$": "<rootDir>/apps/web-service/src/$1"
   }
 }

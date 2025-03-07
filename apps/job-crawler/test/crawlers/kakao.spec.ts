@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
-import { KakaoJobCrawler } from 'src/job-crawler/crawlers/kakao-job-crawler.service';
-import { JobPostSchema } from 'src/job-crawler/job-post.schema';
+import { KakaoJobCrawler } from '../../src/job-crawler/crawlers/kakao-job-crawler.service';
+import { JobPostSchema } from '../../src/job-crawler/job-post.schema';
 
 describe('KakaoJobCrawler', () => {
   let kakaoJobCrawler: KakaoJobCrawler;

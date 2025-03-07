@@ -9,7 +9,12 @@
     "build": "pnpm recursive run build",
     "start:crawler": "pnpm --filter job-crawler start",
     "start:web": "pnpm --filter web-service start",
-    "test": "pnpm recursive run test"
+    "test": "jest",
+    "test:crawler": "pnpm --filter job-crawler test",
+    "test:web": "pnpm --filter web-service test",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:crawler": "pnpm --filter job-crawler test:e2e",
+    "test:e2e:web": "pnpm --filter web-service test:e2e"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
@@ -59,7 +64,7 @@
       "ts"
     ],
     "rootDir": ".",
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": "test/.*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -67,9 +72,10 @@
       "**/*.(t|j)s"
     ],
     "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/src/$1"
+      "^apps/job-crawler/src/(.*)$": "<rootDir>/apps/job-crawler/src/$1",
+      "^apps/web-service/src/(.*)$": "<rootDir>/apps/web-service/src/$1"
     },
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node"
   }
 }

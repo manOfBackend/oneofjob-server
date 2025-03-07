@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NaverJobCrawler } from 'src/job-crawler/crawlers/naver-job-crawler.service';
-import { JobPostSchema } from 'src/job-crawler/job-post.schema';
+import { NaverJobCrawler } from '../../src/job-crawler/crawlers/naver-job-crawler.service';
+import { JobPostSchema } from '../../src/job-crawler/job-post.schema';
 
 describe('NaverJobCrawler', () => {
   let naverJobCrawler: NaverJobCrawler;
