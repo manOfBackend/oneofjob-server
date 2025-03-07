@@ -14,12 +14,13 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
+    "noFallthroughCasesInSwitch": true,
     "paths": {
       "src/*": ["./src/*"],
-      "@common/*": ["libs/common/src/*"],
+      "@lib/*": ["libs/*"],
+      "@apps/*": ["./apps/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist", "test"],
+  "include": ["apps/**/*", "libs/**/*"]
 }
