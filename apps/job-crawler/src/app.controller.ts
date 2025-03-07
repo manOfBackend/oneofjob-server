@@ -8,6 +8,7 @@ export class AppController {
   @Post('crawl')
   async triggerCrawl() {
     await this.orchestrator.crawlAllSites();
+
     return { message: 'OK' };
   }
 }
