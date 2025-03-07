@@ -10,6 +10,10 @@ on:
       - 'docker/**'
       - '.github/workflows/**'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -21,19 +25,18 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: manOfBackend
+          password: ${{ secrets.CR_PAT }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 저장소 이름을 소문자로 변환 (소문자만 가능)
-      - name: Prepare repository name
-        id: repo-name
+      - name: Prepare repository info
+        id: repo-info
         run: |
-          REPO_NAME="${{ github.repository }}"
-          REPO_NAME_LOWERCASE=$(echo $REPO_NAME | tr '[:upper:]' '[:lower:]')
-          echo "value=$REPO_NAME_LOWERCASE" >> $GITHUB_OUTPUT
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner=$OWNER" >> $GITHUB_OUTPUT
+          echo "repo=oneofjob" >> $GITHUB_OUTPUT
 
       - name: Build and push job-crawler
         uses: docker/build-push-action@v5
@@ -41,7 +44,7 @@ jobs:
           context: .
           file: docker/job-crawler.dockerfile
           push: true
-          tags: ghcr.io/${{ steps.repo-name.outputs.value }}/job-crawler:latest
+          tags: ghcr.io/${{ steps.repo-info.outputs.owner }}/${{ steps.repo-info.outputs.repo }}/job-crawler:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -51,7 +54,7 @@ jobs:
           context: .
           file: docker/web-service.dockerfile
           push: true
-          tags: ghcr.io/${{ steps.repo-name.outputs.value }}/web-service:latest
+          tags: ghcr.io/${{ steps.repo-info.outputs.owner }}/${{ steps.repo-info.outputs.repo }}/web-service:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -64,7 +67,7 @@ jobs:
             --token ${{ secrets.CLOUDTYPE_TOKEN }} \
             --project ${{ secrets.CLOUDTYPE_PROJECT_ID }} \
             --service job-crawler \
-            --image ghcr.io/${{ steps.repo-name.outputs.value }}/job-crawler:latest
+            --image ghcr.io/${{ steps.repo-info.outputs.owner }}/${{ steps.repo-info.outputs.repo }}/job-crawler:latest
 
       - name: Deploy web-service to Cloudtype
         run: |
@@ -72,4 +75,4 @@ jobs:
             --token ${{ secrets.CLOUDTYPE_TOKEN }} \
             --project ${{ secrets.CLOUDTYPE_PROJECT_ID }} \
             --service web-service \
-            --image ghcr.io/${{ steps.repo-name.outputs.value }}/web-service:latest
+            --image ghcr.io/${{ steps.repo-info.outputs.owner }}/${{ steps.repo-info.outputs.repo }}/web-service:latest
