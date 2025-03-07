@@ -1,0 +1,67 @@
+name: Deploy to Cloudtype
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'apps/**'
+      - 'libs/**'
+      - 'docker/**'
+      - '.github/workflows/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push job-crawler
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/job-crawler.dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/job-crawler:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push web-service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/web-service.dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/web-service:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Install Cloudtype CLI
+        run: npm install -g @cloudtype/cli
+
+      - name: Deploy job-crawler to Cloudtype
+        run: |
+          cloudtype deploy \
+            --token ${{ secrets.CLOUDTYPE_TOKEN }} \
+            --project ${{ secrets.CLOUDTYPE_PROJECT_ID }} \
+            --service job-crawler \
+            --image ghcr.io/${{ github.repository }}/job-crawler:latest
+
+      - name: Deploy web-service to Cloudtype
+        run: |
+          cloudtype deploy \
+            --token ${{ secrets.CLOUDTYPE_TOKEN }} \
+            --project ${{ secrets.CLOUDTYPE_PROJECT_ID }} \
+            --service web-service \
+            --image ghcr.io/${{ github.repository }}/web-service:latest
