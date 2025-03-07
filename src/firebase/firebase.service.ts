@@ -9,18 +9,18 @@ export class FirebaseService {
 
   constructor(private readonly configService: ConfigService) {
     if (!admin.apps.length) {
-      const credentialPath = this.configService.get<string>('FIREBASE_CREDENTIAL_PATH');
-      const databaseURL = this.configService.get<string>('FIREBASE_DATABASE_URL');
+      const credentialBase64 = configService.get<string>('FIREBASE_CREDENTIAL_BASE64');
 
-      if (!credentialPath || !databaseURL) {
-        throw new Error(
-          'FIREBASE_CREDENTIAL_PATH 또는 FIREBASE_DATABASE_URL이 설정되지 않았습니다.',
-        );
+      if (!credentialBase64) {
+        this.logger.error('FIREBASE_CREDENTIAL_BASE64 환경변수가 설정되지 않았습니다.');
+        return;
       }
+      const credentialJson = Buffer.from(credentialBase64, 'base64').toString('utf-8');
+      const credential = JSON.parse(credentialJson);
+
       admin.initializeApp({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-require-imports
-        credential: admin.credential.cert(require(credentialPath)),
-        databaseURL,
+        credential: admin.credential.cert(credential),
+        databaseURL: configService.get<string>('FIREBASE_DATABASE_URL'),
       });
       this.logger.log('Firebase 초기화 완료');
     }
