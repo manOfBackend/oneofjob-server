@@ -8,8 +8,8 @@ export class ScheduledJobService {
 
   constructor(private readonly jobCrawlerOrchestrator: JobCrawlerOrchestrator) {}
 
-  // 매일 00:00
-  @Cron('0 0 * * *')
+  // 매일 오전 10:00
+  @Cron('00 10 * * *')
   async handleDailyCrawl(): Promise<void> {
     this.logger.log('정각 스케줄 시작: 크롤링 작업 실행');
     await this.jobCrawlerOrchestrator.crawlAllSites();
