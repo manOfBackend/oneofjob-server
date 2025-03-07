@@ -1,0 +1,15 @@
+services:
+  job-crawler:
+    build:
+      context: .
+      dockerfile: docker/job-crawler.dockerfile
+    container_name: job-crawler
+    ports:
+      - '3001:3000'
+  web-service:
+    build:
+      context: .
+      dockerfile: docker/web-service.dockerfile
+    container_name: web-service
+    ports:
+      - '3000:3000'
