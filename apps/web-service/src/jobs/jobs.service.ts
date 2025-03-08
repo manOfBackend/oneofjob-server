@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { FirebaseService } from '../firebase/firebase.service';
+import { Job } from './entities/job.entity';
 
 @Injectable()
 export class JobsService {
-  findAll() {
-    return `This action returns all jobs`;
+  constructor(private readonly firebaseService: FirebaseService) {}
+
+  async findAll(filters: Record<string, string | undefined>): Promise<Job[]> {
+    return this.firebaseService.findAll(filters);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} job`;
+  async findOne(id: string): Promise<Job> {
+    return this.firebaseService.findOne(id);
   }
 }
