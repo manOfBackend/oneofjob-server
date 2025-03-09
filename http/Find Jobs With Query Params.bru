@@ -1,0 +1,15 @@
+meta {
+  name: Find Jobs With Query Params
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/jobs?company=NAVER
+  body: none
+  auth: none
+}
+
+params:query {
+  company: NAVER
+}
