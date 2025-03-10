@@ -8,6 +8,7 @@ module.exports = {
   collectCoverageFrom: ['apps/job-crawler/src/**/*.(t|j)s'],
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/apps/job-crawler/src/$1',
+    '^@lib/(.*)$': '<rootDir>/libs/$1',
   },
   coverageDirectory: './coverage',
   testEnvironment: 'node',

@@ -8,5 +8,6 @@ module.exports = {
   },
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/apps/job-crawler/src/$1',
+    '^@lib/(.*)$': '<rootDir>/libs/$1',
   },
 };
