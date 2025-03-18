@@ -7,10 +7,10 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   {
     ignores: [
-      'eslint.config.mjs',
-      'node_modules',
-      'dist',
-      'coverage',
+      '**/eslint.config.mjs',
+      '**/node_modules',
+      '**/dist',
+      '**/coverage',
       '**/jest.config.js',
       '**/jest.config.mjs',
       '**/jest-e2e.config.js',
