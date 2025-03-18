@@ -83,6 +83,11 @@ jobs:
             options:
               image: ${{ secrets.DOCKERHUB_USERNAME }}/job-crawler:latest
               ports: 3000
+              env:
+                - name: FIREBASE_CREDENTIAL_BASE64
+                  value: ${{ secrets.FIREBASE_CREDENTIAL_BASE64 }}
+                - name: FIREBASE_DATABASE_URL
+                  value: ${{ secrets.FIREBASE_DATABASE_URL }}
 
       - name: Deploy web-service to Cloudtype
         uses: cloudtype-github-actions/deploy@v1
@@ -95,3 +100,8 @@ jobs:
             options:
               image: ${{ secrets.DOCKERHUB_USERNAME }}/web-service:latest
               ports: 3000
+              env:
+                - name: FIREBASE_CREDENTIAL_BASE64
+                  value: ${{ secrets.FIREBASE_CREDENTIAL_BASE64 }}
+                - name: FIREBASE_DATABASE_URL
+                  value: ${{ secrets.FIREBASE_DATABASE_URL }}
