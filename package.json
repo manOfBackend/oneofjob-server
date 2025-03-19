@@ -14,7 +14,7 @@
     "test": "jest",
     "test:crawler": "pnpm --filter job-crawler test",
     "test:web": "pnpm --filter web-service test",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --config ./jest-e2e.config.mjs",
     "test:e2e:crawler": "pnpm --filter job-crawler test:e2e",
     "test:e2e:web": "pnpm --filter web-service test:e2e"
   },
