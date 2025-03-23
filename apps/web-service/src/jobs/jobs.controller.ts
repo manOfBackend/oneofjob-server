@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { JobsService } from './jobs.service';
+import { Career, Company, EmploymentType } from 'src/jobs/entities/job.enums';
 
 @Controller('jobs')
 export class JobsController {
@@ -7,20 +8,14 @@ export class JobsController {
 
   @Get()
   async findAll(
-    @Query('career') career?: string,
-    @Query('company') company?: string,
-    @Query('employmentType') employmentType?: string,
-    @Query('period') period?: string,
-    @Query('title') title?: string,
-    @Query('url') url?: string,
+    @Query('career') career?: Career,
+    @Query('company') company?: Company,
+    @Query('employmentType') employmentType?: EmploymentType,
   ) {
     return this.jobsService.findAll({
       career,
       company,
       employmentType,
-      period,
-      title,
-      url,
     });
   }
 

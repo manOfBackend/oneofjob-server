@@ -31,7 +31,7 @@ export class FirebaseService {
   async findAll(filters: Record<string, string | undefined>): Promise<Job[]> {
     let query: FirebaseFirestore.Query = this.db.collection('jobs');
 
-    const validFields = ['career', 'company', 'employmentType', 'period', 'title', 'url'];
+    const validFields = ['career', 'company', 'employmentType'];
 
     validFields.forEach((field) => {
       if (filters[field]) {
