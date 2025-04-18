@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { JobCrawlerOrchestrator } from './job-crawler/job-crawler.orchestrator.service';
 
 @Controller()
@@ -10,5 +10,10 @@ export class AppController {
     await this.orchestrator.crawlAllSites();
 
     return { message: 'OK' };
+  }
+
+  @Get('crawl/woowahan')
+  async triggerWoowahanCrawl() {
+    return await this.orchestrator.crawlWoowahan();
   }
 }
