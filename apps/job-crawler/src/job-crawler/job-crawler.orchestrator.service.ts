@@ -1,6 +1,6 @@
-import { Injectable, Logger, Inject } from '@nestjs/common';
-import { IJobCrawler } from './job-crawler.interface';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FirebaseService } from '../firebase/firebase.service';
+import { IJobCrawler } from './job-crawler.interface';
 import { JobPost } from './job-post.schema';
 
 @Injectable()
@@ -22,5 +22,21 @@ export class JobCrawlerOrchestrator {
         this.logger.error(`크롤링 실패: ${error.message}`);
       }
     }
+  }
+
+  async crawlWoowahan(): Promise<JobPost[]> {
+    const woowahanCrawler = this.crawlers.find(
+      (crawler) => crawler.constructor.name === 'WoowahanJobCrawler',
+    );
+    if (woowahanCrawler) {
+      try {
+        const jobs: JobPost[] = await woowahanCrawler.crawl();
+        this.logger.log(`총 ${jobs.length}건의 채용공고 크롤링됨`);
+        return jobs;
+      } catch (error) {
+        this.logger.error(`크롤링 실패: ${error.message}`);
+      }
+    }
+    return [] as JobPost[];
   }
 }
