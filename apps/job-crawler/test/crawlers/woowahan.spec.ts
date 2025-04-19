@@ -1,22 +1,22 @@
 import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
-import { KakaoJobCrawler } from '../../src/job-crawler/crawlers/kakao-job-crawler.service';
 import { JobPostSchema } from '../../src/job-crawler/job-post.schema';
+import { WoowahanJobCrawler } from '../../src/job-crawler/crawlers/woowahan-job-crawler.service';
 
-describe('KakaoJobCrawler', () => {
-  let kakaoJobCrawler: KakaoJobCrawler;
+describe('WoowahanJobCrawler', () => {
+  let woowahanJobCrawler: WoowahanJobCrawler;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      providers: [KakaoJobCrawler],
+      providers: [WoowahanJobCrawler],
     }).compile();
 
-    kakaoJobCrawler = moduleFixture.get<KakaoJobCrawler>(KakaoJobCrawler);
+    woowahanJobCrawler = moduleFixture.get<WoowahanJobCrawler>(WoowahanJobCrawler);
   });
 
-  it('카카오로부터 공고를 가져온다.', async () => {
-    const jobs = await kakaoJobCrawler.crawl();
+  it('우아한형제들로부터 공고를 가져온다.', async () => {
+    const jobs = await woowahanJobCrawler.crawl();
 
     // 최소 하나 이상의 채용 공고가 있어야 함
     expect(jobs.length).toBeGreaterThan(0);
