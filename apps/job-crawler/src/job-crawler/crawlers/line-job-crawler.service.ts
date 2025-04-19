@@ -3,7 +3,7 @@ import { IJobCrawler } from '../job-crawler.interface';
 import { HttpService } from '@nestjs/axios';
 import * as cheerio from 'cheerio';
 import { firstValueFrom } from 'rxjs';
-import { JobPost, CareerType, EmploymentType } from '../job-post.schema';
+import { CareerType, EmploymentType, JobPost } from '../job-post.schema';
 
 @Injectable()
 export class LineJobCrawler implements IJobCrawler {
@@ -76,7 +76,8 @@ export class LineJobCrawler implements IJobCrawler {
             startDate = new Date(startDateStr);
 
             if (endDateStr && !endDateStr.includes('채용시까지')) {
-              endDate = new Date(endDateStr);
+              const tempEndDate = new Date(endDateStr);
+              endDate = isNaN(tempEndDate.getTime()) ? undefined : tempEndDate;
             }
           }
         }
@@ -89,7 +90,7 @@ export class LineJobCrawler implements IJobCrawler {
           startDate,
           endDate,
           url: fullUrl,
-        });
+        } as JobPost);
       } catch (error) {
         this.logger.error(`라인 채용공고 파싱 중 오류 발생: ${error.message}`);
       }
