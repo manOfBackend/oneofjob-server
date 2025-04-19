@@ -18,8 +18,6 @@ describe('KakaoJobCrawler', () => {
   it('카카오로부터 공고를 가져온다.', async () => {
     const jobs = await kakaoJobCrawler.crawl();
 
-    console.log('크롤링된 데이터:', JSON.stringify(jobs, null, 2));
-
     // 최소 하나 이상의 채용 공고가 있어야 함
     expect(jobs.length).toBeGreaterThan(0);
 
